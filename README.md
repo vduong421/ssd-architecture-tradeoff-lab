@@ -1,5 +1,7 @@
 # SSD Architecture Tradeoff Lab
 
+GitHub: https://github.com/vduong421/ssd-architecture-tradeoff-lab
+
 An architecture exploration project that scores future SSD design points across performance, endurance, cost efficiency, product differentiation, and validation readiness.
 
 ## Why It Matches The Role
