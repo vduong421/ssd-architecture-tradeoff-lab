@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SSD Architecture Tradeoff Lab</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="page">
+      <section class="masthead">
+        <div>
+          <p class="tag">Roadmap Design Space</p>
+          <h1>SSD Architecture Tradeoff Lab</h1>
+          <p class="intro">
+            Evaluate architecture candidates with an enterprise-style scorecard across performance, endurance, cost, power, differentiation, and validation readiness.
+          </p>
+        </div>
+        <div class="masthead-actions">
+          <button id="runButton">Evaluate Design Space</button>
+          <span id="runStatus" class="status-badge">Ready</span>
+        </div>
+      </section>
+
+      <section class="hero-strip">
+        <div class="metric">
+          <span class="metric-label">Candidates</span>
+          <strong id="candidateCount">-</strong>
+        </div>
+        <div class="metric">
+          <span class="metric-label">Best Score</span>
+          <strong id="bestScore">-</strong>
+        </div>
+        <div class="metric">
+          <span class="metric-label">Portfolio Signal</span>
+          <strong id="portfolioSignal">-</strong>
+        </div>
+        <div class="metric">
+          <span class="metric-label">Validation-Ready</span>
+          <strong id="validationReady">-</strong>
+        </div>
+        <div class="metric wide">
+          <span class="metric-label">Recommended Theme</span>
+          <strong id="themeText">-</strong>
+        </div>
+      </section>
+
+      <section class="board split">
+        <div>
+          <div class="section-head">
+            <h2>Top Architecture Candidates</h2>
+            <p>Best-fit options from the modeled design space</p>
+          </div>
+          <div id="candidateGrid" class="candidate-grid"></div>
+        </div>
+        <div>
+          <div class="section-head">
+            <h2>Selection Notes</h2>
+            <p>Management summary for design reviews</p>
+          </div>
+          <div id="selectionNotes" class="notes-grid"></div>
+        </div>
+      </section>
+
+      <section class="board">
+        <div class="section-head">
+          <h2>Candidate Comparison Table</h2>
+          <p>Normalized scores for roadmap and business tradeoff discussions</p>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Rank</th>
+                <th>Architecture</th>
+                <th>Weighted Score</th>
+                <th>Performance</th>
+                <th>Endurance</th>
+                <th>Cost</th>
+                <th>Power</th>
+                <th>Differentiation</th>
+                <th>Validation</th>
+              </tr>
+            </thead>
+            <tbody id="candidateTableBody"></tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+    <script src="app.js"></script>
+  </body>
+</html>
