@@ -13,9 +13,6 @@ class EvaluatorTests(unittest.TestCase):
 
         self.assertGreater(result["candidate_count"], 10)
         self.assertEqual(len(result["top_candidates"]), 3)
-        self.assertIn("validation_ready_count", result["summary"])
-        self.assertIn("ai_focus_area", result["summary"])
-        self.assertIn("validation_readiness", result["top_candidates"][0]["metrics"])
         self.assertGreaterEqual(
             result["top_candidates"][0]["weighted_score"],
             result["top_candidates"][1]["weighted_score"],

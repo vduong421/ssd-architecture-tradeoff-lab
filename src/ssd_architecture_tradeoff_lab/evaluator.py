@@ -18,11 +18,6 @@ def score_candidate(candidate: dict, weights: dict) -> dict:
     cost_eff = 130 - (channels * 3.8 + dram_cache * 4.5 + (8 if nand_type == "TLC" else 0))
     power_eff = 120 - (channels * 2.5 + dram_cache * 2 + (10 if pcie_generation == 6 else 0))
     power_eff += 8 if controller_node == 5 else 0
-    validation_readiness = 58 + channels * 1.5 + overprovisioning * 0.9 + (6 if nand_type == "TLC" else 0)
-    validation_readiness -= 7 if pcie_generation == 6 else 0
-    validation_readiness += 5 if controller_node == 5 else 0
-    integration_complexity = 22 + channels * 3.2 + dram_cache * 1.5 + (8 if pcie_generation == 6 else 0)
-    integration_complexity += 6 if nand_type == "QLC" else 2
 
     differentiation = 0
     if pcie_generation >= 5:
@@ -50,11 +45,8 @@ def score_candidate(candidate: dict, weights: dict) -> dict:
             "cost_efficiency": round(cost_eff, 2),
             "power_efficiency": round(power_eff, 2),
             "differentiation": round(differentiation, 2),
-            "validation_readiness": round(validation_readiness, 2),
-            "integration_complexity": round(integration_complexity, 2),
         },
         "weighted_score": round(weighted, 2),
-        "ai_focus": _build_ai_focus(validation_readiness, integration_complexity, candidate),
     }
 
 
@@ -71,11 +63,6 @@ def evaluate_design_space(payload: dict, top_n: int = 5) -> dict:
         "summary": {
             "best_score": leader.get("weighted_score", 0),
             "recommended_theme": _recommendation_text(leader),
-            "validation_ready_count": sum(
-                1 for item in ranked if item["metrics"]["validation_readiness"] >= 80
-            ),
-            "ai_focus_area": leader.get("ai_focus", "No design candidates available."),
-            "test_strategy_note": _test_strategy_note(leader),
         },
     }
 
@@ -89,23 +76,3 @@ def _recommendation_text(candidate: dict) -> str:
         f"{candidate['overprovisioning_pct']}% overprovisioning."
     )
 
-
-def _build_ai_focus(validation_readiness: float, integration_complexity: float, candidate: dict) -> str:
-    if validation_readiness < 80:
-        return (
-            f"Use AI-generated validation planning for Gen{candidate['pcie_generation']} {candidate['nand_type']} "
-            "to expand test coverage before broad architecture commitment."
-        )
-    if integration_complexity > 85:
-        return "Use AI-assisted review notes to summarize cross-team integration risk and dependency hotspots."
-    return "Use the design as a pilot for AI-generated scorecards and architecture-review summaries."
-
-
-def _test_strategy_note(candidate: dict) -> str:
-    if not candidate:
-        return "No test strategy available."
-    if candidate["metrics"]["validation_readiness"] < 80:
-        return "Front-load interoperability, endurance, and corner-case QoS validation before customer-facing rollout."
-    if candidate["metrics"]["integration_complexity"] > 85:
-        return "Pair the design with a staged integration plan and dashboard tracking for firmware, media, and platform milestones."
-    return "Validation posture is strong enough for a broader execution dashboard and repository-scale regression plan."

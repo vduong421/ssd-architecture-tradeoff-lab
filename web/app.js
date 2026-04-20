@@ -3,7 +3,6 @@ const runStatus = document.getElementById("runStatus");
 const candidateCount = document.getElementById("candidateCount");
 const bestScore = document.getElementById("bestScore");
 const portfolioSignal = document.getElementById("portfolioSignal");
-const validationReady = document.getElementById("validationReady");
 const themeText = document.getElementById("themeText");
 const candidateGrid = document.getElementById("candidateGrid");
 const selectionNotes = document.getElementById("selectionNotes");
@@ -34,8 +33,6 @@ function candidateCard(item, rank) {
       ${metricLine("Cost Efficiency", item.metrics.cost_efficiency)}
       ${metricLine("Power Efficiency", item.metrics.power_efficiency)}
       ${metricLine("Differentiation", item.metrics.differentiation, 80)}
-      ${metricLine("Validation Readiness", item.metrics.validation_readiness, 120)}
-      <div class="mini">${item.ai_focus}</div>
     </article>
   `;
 }
@@ -55,14 +52,14 @@ function buildNotes(candidates) {
   const mostEfficient = candidates.reduce((best, item) =>
     item.metrics.cost_efficiency > best.metrics.cost_efficiency ? item : best,
   candidates[0]);
-  const strongestValidation = candidates.reduce((best, item) =>
-    item.metrics.validation_readiness > best.metrics.validation_readiness ? item : best,
+  const strongestDifferentiation = candidates.reduce((best, item) =>
+    item.metrics.differentiation > best.metrics.differentiation ? item : best,
   candidates[0]);
 
   selectionNotes.innerHTML = [
     noteCard("Primary Recommendation", `Gen${leader.pcie_generation} / ${leader.nand_type}`, "Best weighted fit for the current business priorities"),
     noteCard("Cost Leader", `${mostEfficient.metrics.cost_efficiency} cost score`, `${mostEfficient.channels} channels with ${mostEfficient.overprovisioning_pct}% OP`),
-    noteCard("Validation Leader", `${strongestValidation.metrics.validation_readiness} readiness`, strongestValidation.ai_focus),
+    noteCard("Differentiation Leader", `${strongestDifferentiation.metrics.differentiation} differentiation`, "Strongest option for roadmap storytelling and market separation"),
   ].join("");
 }
 
@@ -79,7 +76,6 @@ function buildTable(candidates) {
           <td>${item.metrics.cost_efficiency}</td>
           <td>${item.metrics.power_efficiency}</td>
           <td>${item.metrics.differentiation}</td>
-          <td>${item.metrics.validation_readiness}</td>
         </tr>
       `,
     )
@@ -100,14 +96,10 @@ async function runTradeoff() {
     candidateCount.textContent = data.candidate_count;
     bestScore.textContent = data.summary.best_score;
     portfolioSignal.textContent = data.summary.best_score >= 110 ? "Aggressive performance posture" : "Balanced roadmap posture";
-    validationReady.textContent = data.summary.validation_ready_count;
     themeText.textContent = data.summary.recommended_theme;
     candidateGrid.innerHTML = data.top_candidates.map((item, index) => candidateCard(item, index + 1)).join("");
     buildNotes(data.top_candidates);
     buildTable(data.top_candidates);
-    if (data.summary.ai_focus_area) {
-      themeText.textContent = `${data.summary.recommended_theme} ${data.summary.ai_focus_area}`;
-    }
 
     setStatus("Completed", "success");
   } catch (error) {
