@@ -2,6 +2,10 @@
 
 SSD Architecture Tradeoff Lab is a local design-analysis tool for comparing SSD architecture options across performance, endurance, cost, power, and implementation complexity.
 
+## Product Screenshot
+
+![Product screenshot](assets/product-screenshot.png)
+
 It combines deterministic design-space evaluation with a local AI analyst so users can understand the tradeoff reasoning behind the selected architecture.
 
 ## What It Does
