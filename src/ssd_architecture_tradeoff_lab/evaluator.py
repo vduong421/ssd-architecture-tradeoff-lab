@@ -63,8 +63,18 @@ def evaluate_design_space(payload: dict, top_n: int = 5) -> dict:
         "summary": {
             "best_score": leader.get("weighted_score", 0),
             "recommended_theme": _recommendation_text(leader),
+            "weakest_metric": _weakest_metric_text(leader),
+            "ai_grounding_note": "AI analysis must use only this deterministic evaluator output and sample design-space input.",
         },
     }
+
+
+def _weakest_metric_text(candidate: dict) -> str:
+    metrics = candidate.get("metrics", {}) if candidate else {}
+    if not metrics:
+        return "No metric data available."
+    weakest_name, weakest_score = min(metrics.items(), key=lambda item: item[1])
+    return f"{weakest_name.replace('_', ' ').title()} is the weakest modeled score at {weakest_score}."
 
 
 def _recommendation_text(candidate: dict) -> str:

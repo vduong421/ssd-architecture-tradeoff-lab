@@ -17,6 +17,8 @@ class EvaluatorTests(unittest.TestCase):
             result["top_candidates"][0]["weighted_score"],
             result["top_candidates"][1]["weighted_score"],
         )
+        self.assertIn("weakest_metric", result["summary"])
+        self.assertIn("ai_grounding_note", result["summary"])
 
 
 if __name__ == "__main__":

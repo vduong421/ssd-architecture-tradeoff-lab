@@ -8,6 +8,35 @@
   </head>
   <body>
     <main class="page">
+      <section class="board ai-board top-ai-board">
+        <div class="section-head">
+          <h2>Local AI Analyst</h2>
+          <p>Grounded copilot brief from the deterministic SSD ranking output</p>
+        </div>
+        <button id="aiBriefButton">Generate AI Analyst Brief</button>
+        <span id="aiStatus" class="status-badge">Local-first ready</span>
+        <div id="aiBrief" class="ai-brief">
+          Run the evaluator first, then generate a grounded analyst brief.
+        </div>
+
+<div class="chatbox">
+  <h3>Ask Local AI About This Project</h3>
+
+  <div class="sample-questions">
+    <button class="qbtn" data-q="What are the top risks in this SSD design?">Top Risks</button>
+    <button class="qbtn" data-q="What is the root cause of weak metrics?">Root Cause</button>
+    <button class="qbtn" data-q="Explain system tradeoffs between candidates">System Tradeoff</button>
+    <button class="qbtn" data-q="What actions should engineers take next?">Recommended Actions</button>
+  </div>
+
+  <textarea id="chatInput" placeholder="Ask about architecture, risks, tradeoffs..."></textarea>
+  <button id="chatButton">Ask Local AI</button>
+
+  <div id="chatStatus" class="status-badge">Idle</div>
+  <div id="chatOutput" class="ai-brief">Ask a question or use sample buttons.</div>
+</div>
+      </section>
+
       <section class="masthead">
         <div>
           <p class="tag">Roadmap Design Space</p>
@@ -22,7 +51,7 @@
         </div>
       </section>
 
-      <section class="hero-strip">
+<section class="hero-strip">
         <div class="metric">
           <span class="metric-label">Candidates</span>
           <strong id="candidateCount">-</strong>
@@ -82,6 +111,6 @@
         </div>
       </section>
     </main>
-    <script src="app.js"></script>
+<script src="app.js"></script>
   </body>
 </html>

@@ -4,6 +4,7 @@ import json
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 
+from src.ssd_architecture_tradeoff_lab.ai_analyst import chat_about_project, generate_ai_analyst_brief
 from src.ssd_architecture_tradeoff_lab.catalog import load_design_space
 from src.ssd_architecture_tradeoff_lab.evaluator import evaluate_design_space
 
@@ -19,11 +20,31 @@ class Handler(BaseHTTPRequestHandler):
             payload = load_design_space(DEFAULT_INPUT)
             self._send_json(evaluate_design_space(payload, top_n=8))
             return
+        if self.path == "/api/ai-brief":
+            payload = load_design_space(DEFAULT_INPUT)
+            result = evaluate_design_space(payload, top_n=8)
+            self._send_json(generate_ai_analyst_brief(result))
+            return
         target = "index.html" if self.path in ("/", "") else self.path.lstrip("/")
         file_path = WEB_ROOT / target
         if file_path.exists() and file_path.is_file():
             self._send_file(file_path)
             return
+        self.send_error(404, "Not Found")
+
+    def do_POST(self) -> None:  # noqa: N802
+        if self.path == "/api/chat":
+            length = int(self.headers.get("Content-Length", "0"))
+            body = self.rfile.read(length).decode("utf-8")
+            request = json.loads(body or "{}")
+            question = request.get("question", "").strip()
+            model = request.get("model", "google/gemma-4-e4b")
+
+            payload = load_design_space(DEFAULT_INPUT)
+            result = evaluate_design_space(payload, top_n=8)
+            self._send_json(chat_about_project(question, result, model=model))
+            return
+
         self.send_error(404, "Not Found")
 
     def log_message(self, format: str, *args) -> None:  # noqa: A003

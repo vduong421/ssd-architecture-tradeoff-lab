@@ -8,11 +8,11 @@
   },
   "design_space": {
     "pcie_generation": [4, 5, 6],
-    "channels": [8, 12, 16],
+    "channels": [4, 8, 12, 16],
     "nand_type": ["TLC", "QLC"],
-    "controller_nodes_nm": [7, 5],
-    "dram_cache_gb": [2, 4, 8],
-    "overprovisioning_pct": [7, 12, 18]
+    "controller_nodes_nm": [7, 6, 5],
+    "dram_cache_gb": [1, 2, 4, 8],
+    "overprovisioning_pct": [5, 7, 12, 18, 24]
   }
 }
 
