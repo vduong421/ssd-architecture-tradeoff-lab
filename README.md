@@ -1,45 +1,59 @@
 # SSD Architecture Tradeoff Lab
 
-An architecture exploration project that scores future SSD design points across performance, endurance, cost efficiency, and product differentiation.
+SSD Architecture Tradeoff Lab is a local design-analysis tool for comparing SSD architecture options across performance, endurance, cost, power, and implementation complexity.
 
-## Why It Matches The Role
+It combines deterministic design-space evaluation with a local AI analyst so users can understand the tradeoff reasoning behind the selected architecture.
 
-- Connects NAND, PCIe, and SSD architecture choices to product strategy
-- Helps evaluate medium- to long-term roadmaps
-- Supports customer-facing technical justification and internal planning
+## What It Does
 
-## Features
+- Loads SSD design-space options from JSON.
+- Evaluates architecture candidates across multiple weighted criteria.
+- Ranks design options and highlights tradeoff drivers.
+- Displays results in a browser UI.
+- Adds AI analyst and chat endpoints for architecture explanation.
 
-- Enumerates design candidates across multiple controller and NAND choices
-- Computes performance, endurance, power, and cost proxies
-- Produces weighted recommendation scores for roadmap decisions
-- Includes Monte Carlo style sensitivity across market priorities
+## AI Features
+
+- Local AI analyst summarizes why an SSD design option wins or loses.
+- AI chat answers questions about endurance, latency, cost, power, and risk tradeoffs.
+- AI recommendations are grounded in deterministic scorecard results.
+- Browser UI exposes both score data and AI explanation.
+
+## Architecture
+
+```text
+Design-space JSON
+      |
+      v
+SSD evaluator -> weighted scores -> architecture ranking
+      |
+      v
+Local AI analyst / chat -> design rationale + next experiment
+      |
+      v
+Browser dashboard
+```
 
 ## Run
 
 ```powershell
-python -m src.ssd_architecture_tradeoff_lab.cli --input samples\design_space.json --top 5
+run.bat
 ```
 
-## Web Dashboard
+## Local AI Setup
 
-```powershell
-python server.py
-```
+The project supports LM Studio or another local OpenAI-compatible server. It defaults to small local models such as `google/gemma-4-e4b`.
 
-Then open `http://127.0.0.1:8002`.
+The deterministic evaluator works without AI.
 
-## Project Workbench
+## Main Files
 
-Launch the production-style desktop workbench with:
+- `src/ssd_architecture_tradeoff_lab/evaluator.py` - scorecard and ranking.
+- `src/ssd_architecture_tradeoff_lab/ai_analyst.py` - local AI analyst and chat logic.
+- `server.py` - local web API.
+- `samples/design_space.json` - candidate architecture data.
+- `web/` - dashboard UI.
 
-```powershell
-launch-workbench.bat
-```
+## Output
 
-What it adds:
-
-- Local-first AI copilot using `google/gemma-4-e4b` by default
-- Operator-focused workbench for reviewing real project inputs and outputs
-- System design, production-impact, and operational brief generation on demand
-- Grounded responses based on this project's README, sample files, and deterministic outputs
+The dashboard shows ranked SSD architecture options, score components, risk notes, and AI-generated design guidance.
